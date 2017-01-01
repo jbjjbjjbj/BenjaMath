@@ -1,0 +1,51 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>BenjaMath</title>
+  <meta name="description" content="A webapp for marking math assignments and scientific papers">
+  <meta name="author" content="Benjadahl">
+
+  <!--Load custom stylesheet-->
+  <link rel="stylesheet" href="styles/index.css">
+
+  <!-- Load algebra.js -->
+  <script src="../vendor/algebra-0.2.5.min.js"></script>
+  <script>
+    var Fraction = algebra.Fraction;
+    var Expression = algebra.Expression;
+    var Equation = algebra.Equation;
+  </script>
+
+  <!-- Load Math.js-->
+  <script src="../vendor/math.min.js"></script>
+
+  <!-- Load katex -->
+  <script src="../vendor/katex/katex.min.js"></script>
+  <link rel="stylesheet" href="../vendor/katex/katex.min.css">
+
+  <!-- Load CKEditor -->
+  <script src="../vendor/ckeditor/ckeditor.js"></script>
+
+  <!-- Load jQuery-->
+  <script src="../vendor/jquery-3.1.1.min.js"></script>
+
+</head>
+
+<body>
+  <div id="mainContainer">
+    <div id="editorContainer">
+      <h1 class="header">BenjaMath</h1>
+      <textarea id="editor" rows="10" cols="80"></textarea>
+    </div>
+    <div id="previewContainer">
+      <h1 class="header">Result</h1>
+      <hr />
+      <div id="preview"></div>
+    </div>
+  </div>
+  <script src="scripts/main.js"></script>
+</body>
+</html>
