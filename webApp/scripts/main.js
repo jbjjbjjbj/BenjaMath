@@ -2,7 +2,7 @@ CKEDITOR.config.height = '75vh';
 
 CKEDITOR.replace("editor");
 
-CKEDITOR.instances.editor.setData("<h3>Example of use:</h3><pre>2*2<br>solve{x^2=4,x}</pre>");
+CKEDITOR.instances.editor.setData("<h3>Example of use:</h3><pre>2*2<br>3^3<br>solve{x^2=4,x}</pre>");
 
 parser = new DOMParser();
 
@@ -11,8 +11,12 @@ var userExpressions = [];
 //Function to solve the equations
 function solve (eq, variable) {
   eq = new algebra.parse(eq);
-  solved = eq.solveFor(variable)
-  return {string: solved.toString(), algebra: solved};
+  var result = {};
+  console.log(eq.toTex());
+  result.ls = eq.toTex() + "\\Longrightarrow " + variable;
+  solved = eq.solveFor(variable);
+  result.rs = {string: solved.toString(), algebra: solved};
+  return result;
 }
 
 //Function to split the multiple sloutions from the equation solving intro and array of expressions("stringified")
@@ -47,12 +51,14 @@ function renderPreview(){
               args[1] = "x";
             }
             var ls = args[1];
-            var rs = window[m.substring(0, curlyOpen)](args[0], args[1]);
-            userExpressions.push({ls: ls, rs: {string: solutionToArray(rs.string)}});
+            var result = window[m.substring(0, curlyOpen)](args[0], args[1]);
+            userExpressions.push({ls: result.ls, rs: {string: solutionToArray(result.rs.string)}});
           }
         } else {
-          userExpressions.push({ls: m, rs: {string: new algebra.parse(m).toString()}});
+          userExpressions.push({ls: math.parse(m).toTex(), rs: {string: new algebra.parse(m).toString()}});
         }
+
+
         var rsRender = "";
         var solution = userExpressions[userExpressions.length - 1].rs.string;
         if (typeof solution === "object"){
@@ -67,7 +73,9 @@ function renderPreview(){
         } else {
           rsRender = math.parse(solution).toTex();
         }
-        replaceString += katex.renderToString(math.parse(userExpressions[userExpressions.length - 1].ls).toTex() + "=" + rsRender) + "<br>";
+
+
+        replaceString += katex.renderToString(userExpressions[userExpressions.length - 1].ls + "=" + rsRender) + "<br>";
       }
     }
     $(element).replaceWith(replaceString);
