@@ -2,7 +2,7 @@ CKEDITOR.config.height = '75vh';
 
 CKEDITOR.replace("editor");
 
-CKEDITOR.instances.editor.setData("<h3>Example of use:</h3><pre>2*2<br>3^3<br>solve{x^2=4,x}</pre>");
+CKEDITOR.instances.editor.setData("<h3>Example of use:</h3><pre>2*2<br>3^3<br>solve{x^2=4,x}<br>noEval{f(x)=ax^2+bx+c}</pre>");
 
 parser = new DOMParser();
 
@@ -91,7 +91,11 @@ function renderPreview(){
   userExpressions = [];
 }
 
-setInterval (function() {
-  window["renderPreview"]();
-
-}, 500);
+for (var i in CKEDITOR.instances) {
+  CKEDITOR.instances[i].on("change", function() {
+    renderPreview();
+  });
+  CKEDITOR.instances[i].on("instanceReady", function() {
+    renderPreview();
+  });
+}
