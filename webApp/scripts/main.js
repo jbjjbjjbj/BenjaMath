@@ -49,7 +49,7 @@ function renderPreview(){
     for (m of mathArray){
       if (m !== ""){
         var curlyOpen = m.indexOf("{");
-        var curlyClose = m.indexOf("}");
+        var curlyClose = m.lastIndexOf("}");
         if (curlyOpen !== -1){
           if (curlyClose !== -1){
             var args = m.substring(curlyOpen + 1 , curlyClose);
@@ -81,7 +81,6 @@ function renderPreview(){
         } else {
           rsRender += math.parse(solution).toTex();
         }
-
 
         replaceString += katex.renderToString(userExpressions[userExpressions.length - 1].ls + rsRender) + "<br>";
       }
