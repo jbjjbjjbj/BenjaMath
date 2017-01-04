@@ -28,6 +28,13 @@ function solutionToArray(ex) {
   return ex;
 }
 
+function noEval(ex){
+  var result = {};
+  result.ls = ex;
+  result.rs = {string: ""};
+  return result;
+}
+
 function renderPreview(){
   $("#preview").empty();
   var eData = CKEDITOR.instances.editor.getData();
@@ -50,7 +57,6 @@ function renderPreview(){
             if (typeof args[1] !== "string"){
               args[1] = "x";
             }
-            var ls = args[1];
             var result = window[m.substring(0, curlyOpen)](args[0], args[1]);
             userExpressions.push({ls: result.ls, rs: {string: solutionToArray(result.rs.string)}});
           }
@@ -59,7 +65,7 @@ function renderPreview(){
         }
 
 
-        var rsRender = "";
+        var rsRender = "=";
         var solution = userExpressions[userExpressions.length - 1].rs.string;
         if (typeof solution === "object"){
           rsRender = "(";
@@ -70,12 +76,14 @@ function renderPreview(){
             }
           }
           rsRender += ")";
+        } else if(solution === ""){
+          rsRender = "";
         } else {
-          rsRender = math.parse(solution).toTex();
+          rsRender += math.parse(solution).toTex();
         }
 
 
-        replaceString += katex.renderToString(userExpressions[userExpressions.length - 1].ls + "=" + rsRender) + "<br>";
+        replaceString += katex.renderToString(userExpressions[userExpressions.length - 1].ls + rsRender) + "<br>";
       }
     }
     $(element).replaceWith(replaceString);
