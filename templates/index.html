@@ -9,10 +9,10 @@
   <meta name="author" content="Benjadahl">
 
   <!--Load custom stylesheet-->
-  <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='benjaMath/styles/index.css') }}">
 
   <!-- Load algebra.js -->
-  <script src="../vendor/algebra-0.2.5.min.js"></script>
+  <script src="{{ url_for('static', filename='vendor/algebra-0.2.5.min.js') }}"></script>
   <script>
     var Fraction = algebra.Fraction;
     var Expression = algebra.Expression;
@@ -20,17 +20,17 @@
   </script>
 
   <!-- Load Math.js-->
-  <script src="../vendor/math.min.js"></script>
+  <script src="{{ url_for('static', filename='vendor/math.min.js') }}"></script>
 
   <!-- Load katex -->
-  <script src="../vendor/katex/katex.min.js"></script>
-  <link rel="stylesheet" href="../vendor/katex/katex.min.css">
+  <script src="{{ url_for('static', filename='vendor/katex/katex.min.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/katex/katex.min.css') }}">
 
   <!-- Load CKEditor -->
-  <script src="../vendor/ckeditor/ckeditor.js"></script>
+  <script src="{{ url_for('static', filename='vendor/ckeditor/ckeditor.js') }}"></script>
 
   <!-- Load jQuery-->
-  <script src="../vendor/jquery-3.1.1.min.js"></script>
+  <script src="{{ url_for('static', filename='vendor/jquery-3.1.1.min.js') }}"></script>
 
 </head>
 
@@ -46,6 +46,6 @@
       <div id="preview"></div>
     </div>
   </div>
-  <script src="scripts/main.js"></script>
+  <script src="{{ url_for('static', filename='benjaMath/scripts/main.js') }}"></script>
 </body>
 </html>
