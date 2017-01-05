@@ -10,12 +10,23 @@ var userExpressions = [];
 
 //Function to solve the equations
 function solve (eq, variable) {
-  eq = new algebra.parse(eq);
-  var result = {};
-  console.log(eq.toTex());
-  result.ls = eq.toTex() + "\\Longrightarrow " + variable;
-  solved = eq.solveFor(variable);
-  result.rs = {string: solved.toString(), algebra: solved};
+  var eqAlgebra = new algebra.parse(eq);
+  let result = {};
+  result.ls = eqAlgebra.toTex() + "\\Longrightarrow " + variable;
+  /*This statement will try to solve the equation with javascript, if it is
+  unsuccesful the eqation will be send to the server*/
+  try {
+    var solved = eqAlgebra.solveFor(variable);
+    var solvedString = solved.toString();
+  } catch(err) {
+    //Send the equation to the server
+    var solvedString = JSON.parse(solveEqExt(eq, variable));
+    /*The next 2 steps are necesarry as python lists are weird
+    The solutions will be converted to the same format as algebrajs*/
+    solvedString = solvedString.substring(1, solvedString.length);
+    solvedString = solvedString.substring(0, solvedString.length - 1);
+  }
+  result.rs = {string: solvedString, algebra: solved};
   return result;
 }
 
