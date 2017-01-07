@@ -35,15 +35,18 @@
 </head>
 
 <body>
-  <div id="mainContainer">
-    <div id="editorContainer">
-      <h1 class="header">BenjaMath</h1>
-      <textarea id="editor" rows="10" cols="80"></textarea>
-    </div>
-    <div id="previewContainer">
-      <h1 class="header">Result</h1>
-      <hr />
-      <div id="preview"></div>
+  <div id="content">
+    <button id="printButton" style="display:block">Print</button>
+    <div id="mainContainer">
+      <div id="editorContainer">
+        <h1 class="header">BenjaMath</h1>
+        <textarea id="editor" rows="10" cols="80"></textarea>
+      </div>
+      <div id="previewContainer">
+        <h1 class="header">Result</h1>
+        <hr />
+        <div id="preview"></div>
+      </div>
     </div>
   </div>
   <script src="{{ url_for('static', filename='benjaMath/scripts/externalMath.js') }}"></script>

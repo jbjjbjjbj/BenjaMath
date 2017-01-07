@@ -8,6 +8,17 @@ parser = new DOMParser();
 
 var userExpressions = [];
 
+//Event for printButton
+document.getElementById("printButton").addEventListener("click", function(){
+  $("#content").hide();
+  let previewContent = $("#preview").html();
+  console.log(previewContent);
+  $("body").append("<div id='printContent'>" + previewContent + "</div>");
+  window.print();
+  $("#printContent").remove();
+  $("#content").show();
+});
+
 //Function to solve the equations
 function solve (eq, variable) {
   var eqAlgebra = new algebra.parse(eq);
