@@ -32,11 +32,15 @@
   <!-- Load jQuery-->
   <script src="{{ url_for('static', filename='vendor/jquery-3.1.1.min.js') }}"></script>
 
+  <script src="{{ url_for('static', filename='vendor/FileSaver.min.js') }}"></script>
+
 </head>
 
 <body>
   <div id="content">
-    <button id="printButton" style="display:block">Print</button>
+    <button id="printButton">Print</button>
+    <button id="saveButton">Save</button>
+    <button id="loadButton">Load</button>
     <div id="mainContainer">
       <div id="editorContainer">
         <h1 class="header">BenjaMath</h1>

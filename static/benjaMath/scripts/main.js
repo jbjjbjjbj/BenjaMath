@@ -1,3 +1,6 @@
+/*
+  INITIAL CODE TO BE RUN
+*/
 CKEDITOR.config.height = '75vh';
 
 CKEDITOR.replace("editor");
@@ -8,16 +11,42 @@ parser = new DOMParser();
 
 var userExpressions = [];
 
+for (var i in CKEDITOR.instances) {
+  CKEDITOR.instances[i].on("change", function() {
+    renderPreview();
+  });
+  CKEDITOR.instances[i].on("instanceReady", function() {
+    renderPreview();
+  });
+}
+
+/*
+  FUNCTIONS
+*/
+
+//APPLICATION FEATURES
+
 //Event for printButton
 document.getElementById("printButton").addEventListener("click", function(){
   $("#content").hide();
   let previewContent = $("#preview").html();
-  console.log(previewContent);
   $("body").append("<div id='printContent'>" + previewContent + "</div>");
   window.print();
   $("#printContent").remove();
   $("#content").show();
 });
+
+//Event for the saveButton
+document.getElementById("saveButton").addEventListener("click", function(){
+  let editorData = CKEDITOR.instances.editor.getData();
+  var blob = new Blob([editorData], {type: "text/plain;charset=utf-8"});
+  saveAs(blob, "hello world.html");
+});
+
+//Event for the loadButton
+
+
+//MATH HANDLING
 
 //Function to solve the equations
 function solve (eq, variable) {
@@ -111,13 +140,4 @@ function renderPreview(){
   }
   $("#preview").append(data.getElementsByTagName("body")[0].innerHTML);
   userExpressions = [];
-}
-
-for (var i in CKEDITOR.instances) {
-  CKEDITOR.instances[i].on("change", function() {
-    renderPreview();
-  });
-  CKEDITOR.instances[i].on("instanceReady", function() {
-    renderPreview();
-  });
 }
