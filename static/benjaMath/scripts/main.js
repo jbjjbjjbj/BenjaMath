@@ -72,14 +72,14 @@ document.getElementById("openInput").addEventListener("change", function(evt){
 
 //Function to solve the equations
 function solve (eq, variable) {
-  var eqAlgebra = new algebra.parse(eq);
   let result = {};
-  result.ls = eqAlgebra.toTex() + "\\Longrightarrow " + variable;
   /*This statement will try to solve the equation with javascript, if it is
   unsuccesful the eqation will be send to the server*/
   try {
+      var eqAlgebra = new algebra.parse(eq);
     var solved = eqAlgebra.solveFor(variable);
     var solvedString = solved.toString();
+    result.ls = eqAlgebra.toTex()
   } catch(err) {
     //Send the equation to the server
     var solvedString = JSON.parse(solveEqExt(eq, variable));
@@ -87,7 +87,9 @@ function solve (eq, variable) {
     The solutions will be converted to the same format as algebrajs*/
     solvedString = solvedString.substring(1, solvedString.length);
     solvedString = solvedString.substring(0, solvedString.length - 1);
+    result.ls = eq;
   }
+  result.ls += "\\Longrightarrow " + variable;
   result.rs = {string: solvedString, algebra: solved};
   return result;
 }
