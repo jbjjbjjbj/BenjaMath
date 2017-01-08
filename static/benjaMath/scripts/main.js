@@ -43,8 +43,27 @@ document.getElementById("saveButton").addEventListener("click", function(){
   saveAs(blob, "hello world.html");
 });
 
-//Event for the loadButton
+//Event for the openButton
+document.getElementById("openButton").addEventListener("click", function(){
+  $("#openInput").trigger("click");
+});
 
+//Event for choosing new file
+document.getElementById("openInput").addEventListener("change", function(evt){
+  //Choose the first file from the list, as only one file is allowed
+  var f = evt.target.files[0];
+  //Declare a new fileReader
+  var reader = new FileReader();
+  //Set up the code for loading a file with the reader
+  reader.onload = function(e){
+    //Contents of file being read
+    var contents = e.target.result;
+    //Set the contents of the editor
+    CKEDITOR.instances.editor.setData(contents);
+  }
+  //Read the file as text and then run the onload function 
+  reader.readAsText(f);
+});
 
 //MATH HANDLING
 
