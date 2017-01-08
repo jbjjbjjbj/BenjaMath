@@ -40,7 +40,8 @@ document.getElementById("printButton").addEventListener("click", function(){
 document.getElementById("saveButton").addEventListener("click", function(){
   let editorData = CKEDITOR.instances.editor.getData();
   var blob = new Blob([editorData], {type: "text/plain;charset=utf-8"});
-  saveAs(blob, "hello world.html");
+  var projectName = prompt("Enter project name:","BenjaMath Project");
+  saveAs(blob, projectName + ".html");
 });
 
 //Event for the openButton
@@ -61,7 +62,7 @@ document.getElementById("openInput").addEventListener("change", function(evt){
     //Set the contents of the editor
     CKEDITOR.instances.editor.setData(contents);
   }
-  //Read the file as text and then run the onload function 
+  //Read the file as text and then run the onload function
   reader.readAsText(f);
 });
 
