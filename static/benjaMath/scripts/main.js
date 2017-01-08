@@ -41,7 +41,9 @@ document.getElementById("saveButton").addEventListener("click", function(){
   let editorData = CKEDITOR.instances.editor.getData();
   var blob = new Blob([editorData], {type: "text/plain;charset=utf-8"});
   var projectName = prompt("Enter project name:","BenjaMath Project");
-  saveAs(blob, projectName + ".html");
+  if(projectName !== null){
+    saveAs(blob, projectName + ".html");
+  }
 });
 
 //Event for the openButton
