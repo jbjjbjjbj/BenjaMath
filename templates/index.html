@@ -8,6 +8,9 @@
   <meta name="description" content="A webapp for making math assignments and scientific papers">
   <meta name="author" content="Benjadahl">
 
+  <!--Needed to import libraries with electron-->
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
   <!--Load custom stylesheet-->
   <link rel="stylesheet" href="{{ url_for('static', filename='benjaMath/styles/index.css') }}">
 
@@ -33,6 +36,9 @@
   <script src="{{ url_for('static', filename='vendor/jquery-3.1.1.min.js') }}"></script>
 
   <script src="{{ url_for('static', filename='vendor/FileSaver.min.js') }}"></script>
+
+  <!--Ending the electron import-->
+  <script>if (window.module) module = window.module;</script>
 
 </head>
 
