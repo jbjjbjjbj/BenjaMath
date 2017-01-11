@@ -7,6 +7,13 @@ const BrowserWindow = electron.BrowserWindow;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let py;
+
+//This is set in a timeout to "multithread"
+setTimeout(function() {
+  py = require('child_process').spawn('python3',['server.py']);
+}, 10);
+
 
 function createWindow () {
   // Create the browser window.
@@ -14,7 +21,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   //mainWindow.loadURL(`file://${__dirname}/app/index.html`);
-  mainWindow.loadURL(`http://localhost:5000`);
+  mainWindow.loadURL(`file://${__dirname}/electronWrapper/electronWrapper.html`);
   mainWindow.toggleDevTools();
 
   // Emitted when the window is closed.
@@ -40,8 +47,6 @@ app.on('window-all-closed', function () {
     app.quit();
   }
 })
-
-var py = require('child_process').spawn('python3',['mathServer.py'])
 
 app.on('activate', function () {
   // On OS X it's common to re-create a window in the app when the
