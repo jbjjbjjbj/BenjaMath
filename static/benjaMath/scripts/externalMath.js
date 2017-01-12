@@ -13,7 +13,3 @@ function ajaxRq(aUrl, aData){
   });
   return response;
 }
-
-function solveEqExt(eq, variable){
-  return(ajaxRq("/solveEq/", {"eq": eq, "variable": variable}));
-}

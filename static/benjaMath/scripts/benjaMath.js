@@ -72,8 +72,9 @@ document.getElementById("openInput").addEventListener("change", function(evt){
 
 //Function to solve the equations
 function solve (eq, variable) {
-  var solvedString = JSON.parse(solveEqExt(eq, variable));
-  return solvedString;
+  let requestData = ajaxRq("/solveEq/", {"eq": eq, "variable": variable});
+  requestData = JSON.parse(requestData);
+  return requestData;
 }
 
 //Function to split the multiple sloutions from the equation solving intro and array of expressions("stringified")
@@ -85,8 +86,8 @@ function solutionToArray(ex) {
   return ex;
 }
 
-function evalf(ex, decimals){                                                                                                                                                       
-  return JSON.parse(ajaxRq("/evalfCalc/", {"ex": ex, "decimals" : decimals}));                                                                                                                                                                                                                                  
+function evalf(ex, decimals){
+  return JSON.parse(ajaxRq("/evalfCalc/", {"ex": ex, "decimals" : decimals}));
 }
 
 function noEval(ex){
