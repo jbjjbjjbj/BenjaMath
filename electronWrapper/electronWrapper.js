@@ -8,4 +8,4 @@ setTimeout(function() {
   if(contentTest === null){
     location.reload();
   }
-}, 3000);
+}, 500);
