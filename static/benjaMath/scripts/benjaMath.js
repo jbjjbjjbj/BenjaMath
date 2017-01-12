@@ -72,26 +72,8 @@ document.getElementById("openInput").addEventListener("change", function(evt){
 
 //Function to solve the equations
 function solve (eq, variable) {
-  let result = {};
-  /*This statement will try to solve the equation with javascript, if it is
-  unsuccesful the eqation will be send to the server*/
-  try {
-      var eqAlgebra = new algebra.parse(eq);
-    var solved = eqAlgebra.solveFor(variable);
-    var solvedString = solved.toString();
-    result.ls = eqAlgebra.toTex()
-  } catch(err) {
-    //Send the equation to the server
-    var solvedString = JSON.parse(solveEqExt(eq, variable));
-    /*The next 2 steps are necesarry as python lists are weird
-    The solutions will be converted to the same format as algebrajs*/
-    solvedString = solvedString.substring(1, solvedString.length);
-    solvedString = solvedString.substring(0, solvedString.length - 1);
-    result.ls = eq;
-  }
-  result.ls += "\\Longrightarrow " + variable;
-  result.rs = {string: solvedString, algebra: solved};
-  return result;
+  var solvedString = JSON.parse(solveEqExt(eq, variable));
+  return solvedString;
 }
 
 //Function to split the multiple sloutions from the equation solving intro and array of expressions("stringified")
@@ -104,10 +86,7 @@ function solutionToArray(ex) {
 }
 
 function noEval(ex){
-  var result = {};
-  result.ls = ex;
-  result.rs = {string: ""};
-  return result;
+  return ex;
 }
 
 function renderPreview(){
@@ -132,32 +111,15 @@ function renderPreview(){
             if (typeof args[1] !== "string"){
               args[1] = "x";
             }
-            var result = window[m.substring(0, curlyOpen)](args[0], args[1]);
-            userExpressions.push({ls: result.ls, rs: {string: solutionToArray(result.rs.string)}});
+            let result = window[m.substring(0, curlyOpen)](args[0], args[1]);
+            userExpressions.push(result);
           }
         } else {
-          userExpressions.push({ls: math.parse(m).toTex(), rs: {string: new algebra.parse(m).toString()}});
+          let result = math.parse(m).toTex() + "=" + new algebra.parse(m).toString();
+          userExpressions.push(result);
         }
-
-
-        var rsRender = "=";
-        var solution = userExpressions[userExpressions.length - 1].rs.string;
-        if (typeof solution === "object"){
-          rsRender = "(";
-          for (var i = 0; i < solution.length; i++) {
-            rsRender += math.parse(solution[i]).toTex();
-            if(solution.length - i !== 1){
-              rsRender += ",";
-            }
-          }
-          rsRender += ")";
-        } else if(solution === ""){
-          rsRender = "";
-        } else {
-          rsRender += math.parse(solution).toTex();
-        }
-
-        replaceString += katex.renderToString(userExpressions[userExpressions.length - 1].ls + rsRender) + "<br>";
+        console.log(userExpressions[userExpressions.length - 1]);
+        replaceString += katex.renderToString(userExpressions[userExpressions.length - 1]) + "<br>";
       }
     }
     $(element).replaceWith(replaceString);
