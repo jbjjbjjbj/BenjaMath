@@ -86,8 +86,13 @@ function solutionToArray(ex) {
   return ex;
 }
 
+//Floating point evaluation
 function evalf(ex, decimals){
   return JSON.parse(ajaxRq("/evalfCalc/", {"ex": ex, "decimals" : decimals}));
+}
+
+function simplify(ex){
+  return JSON.parse(ajaxRq("/simplifyExpression/", {"ex": ex}));
 }
 
 function noEval(ex){
@@ -120,10 +125,11 @@ function renderPreview(){
             userExpressions.push(result);
           }
         } else {
-          let result = math.parse(m).toTex() + "=" + new algebra.parse(m).toString();
+          //Default operation if not function is detected
+          let result = simplify(m);
           userExpressions.push(result);
         }
-        console.log(userExpressions[userExpressions.length - 1]);
+
         replaceString += katex.renderToString(userExpressions[userExpressions.length - 1]) + "<br>";
       }
     }
