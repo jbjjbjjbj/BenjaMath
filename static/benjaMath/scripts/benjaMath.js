@@ -85,6 +85,10 @@ function solutionToArray(ex) {
   return ex;
 }
 
+function evalf(ex, decimals){                                                                                                                                                       
+  return JSON.parse(ajaxRq("/evalfCalc/", {"ex": ex, "decimals" : decimals}));                                                                                                                                                                                                                                  
+}
+
 function noEval(ex){
   return ex;
 }

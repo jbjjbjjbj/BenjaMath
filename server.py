@@ -12,6 +12,26 @@ app = Flask(__name__)
 def hello():
     return render_template('index.html')
 
+@app.route('/evalfCalc/', methods=['POST'])
+def evalfCalc():
+    resultString = "";
+    #Convert from javascript exponent syntax to python syntax
+    inputString = request.json["ex"].replace("^", "**")
+    decimals = request.json["decimals"] 
+    resultString += latex(inputString) + " \\approx"
+    print(inputString + "   " + resultString)
+    #Check if decimals
+    if decimals == "x":
+        result = parse_expr(inputString).evalf()
+    else:
+        result = parse_expr(inputString).evalf(decimals)
+    
+    #Convert to latex and send back to client
+    resultString += latex(result)
+    return json.dumps(resultString)
+    
+    
+
 @app.route('/solveEq/', methods=['POST'])
 def solveEq():
     resultString = "";
