@@ -9,7 +9,7 @@ CKEDITOR.instances.editor.setData("<h3>Example of use:</h3><pre>2*2<br>3^3<br>so
 
 parser = new DOMParser();
 
-var userExpressions = [];
+var userExpressions = {};
 
 var lastUsedPath = "test";
 
@@ -114,31 +114,35 @@ function renderPreview(){
     var element = preTags[0];
     var replaceString = "";
     var mathArray = element.innerHTML.split("\n");
+    var latexResult = "";
     for (m of mathArray){
-      if (m !== ""){
-        var curlyOpen = m.indexOf("{");
-        var curlyClose = m.lastIndexOf("}");
-        if (curlyOpen !== -1){
-          if (curlyClose !== -1){
-            var args = m.substring(curlyOpen + 1 , curlyClose);
-            args = args.split(",");
-            if (typeof args[1] !== "string"){
-              args[1] = "x";
+      if (m !== "") {
+        if (typeof userExpressions[m] === "undefined") {
+          var curlyOpen = m.indexOf("{");
+          var curlyClose = m.lastIndexOf("}");
+          if (curlyOpen !== -1){
+            if (curlyClose !== -1){
+              var args = m.substring(curlyOpen + 1 , curlyClose);
+              args = args.split(",");
+              if (typeof args[1] !== "string"){
+                args[1] = "x";
+              }
+              latexResult = window[m.substring(0, curlyOpen)](args[0], args[1]);
+              userExpressions[m] = latexResult;
             }
-            let result = window[m.substring(0, curlyOpen)](args[0], args[1]);
-            userExpressions.push(result);
+          } else {
+            //Default operation if not function is detected
+            latexResult = simplify(m);
+            userExpressions[m] = latexResult;
           }
         } else {
-          //Default operation if not function is detected
-          let result = simplify(m);
-          userExpressions.push(result);
+          latexResult = userExpressions[m];
         }
-
-        replaceString += katex.renderToString(userExpressions[userExpressions.length - 1]) + "<br>";
+        replaceString += katex.renderToString(latexResult) + "<br>";
       }
     }
     $(element).replaceWith(replaceString);
   }
+  console.log(userExpressions);
   $("#preview").append(data.getElementsByTagName("body")[0].innerHTML);
-  userExpressions = [];
 }
