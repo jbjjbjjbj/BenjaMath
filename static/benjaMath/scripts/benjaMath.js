@@ -11,6 +11,8 @@ parser = new DOMParser();
 
 var userExpressions = [];
 
+var lastUsedPath = "test";
+
 for (var i in CKEDITOR.instances) {
   CKEDITOR.instances[i].on("change", function() {
     renderPreview();
@@ -64,8 +66,10 @@ document.getElementById("openInput").addEventListener("change", function(evt){
     //Set the contents of the editor
     CKEDITOR.instances.editor.setData(contents);
   }
+  lastUsedPath = f.path;
   //Read the file as text and then run the onload function
   reader.readAsText(f);
+
 });
 
 //MATH HANDLING

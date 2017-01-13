@@ -14,20 +14,37 @@ setTimeout(function() {
 
 //When the iframe is loaded run this
 $("iframe#contentFrame").on("load", function(){
+  //Insert saveAs button
+  let saveAsButton = frameContent.document.createElement("button");
+  saveAsButton.id = "saveAsButton";
+  let buttonText = frameContent.document.createTextNode("Save As");
+  saveAsButton.appendChild(buttonText);
+  frameContent.document.getElementById("buttons").appendChild(saveAsButton);
+
   //Depedencies for the save function
   var app = require("electron").remote;
   var dialog = app.dialog;
   var fs = require('fs');
 
-  //Overwrite the click event for the save button
-  frameContent.document.getElementById("saveButton").addEventListener("click", function(){
+  //Overwrite the click event for the saveAs button
+  frameContent.document.getElementById("saveAsButton").addEventListener("click", function(){
     let editorData = frameContent.CKEDITOR.instances.editor.getData();
     dialog.showSaveDialog(function(path){
       fs.writeFile(path, editorData, function(err) {
+        frameContent.lastUsedPath = path;
         if(err) {
           return console.log(err);
         }
       });
+    });
+  });
+
+  frameContent.document.getElementById("saveButton").addEventListener("click", function(){
+    let editorData = frameContent.CKEDITOR.instances.editor.getData();
+    fs.writeFile(frameContent.lastUsedPath, editorData, function(err) {
+      if(err) {
+        return console.log(err);
+      }
     });
   });
 });
